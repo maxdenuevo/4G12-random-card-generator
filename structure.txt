@@ -1,0 +1,12 @@
+.
+├── src
+│   ├── main.js
+│   └── style.css
+├── README.md
+├── index.html
+├── package-lock.json
+├── package.json
+├── structure.txt
+└── vercel.json
+
+2 directories, 8 files

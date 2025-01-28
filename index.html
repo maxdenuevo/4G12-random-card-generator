@@ -12,6 +12,10 @@
       <span class="suit"></span>
       <span class="value bottom-value"></span>
     </div>
+    <div class="controls">
+      <button class="generate-btn" id="generateBtn">Generate New Card</button>
+      <span class="timer" id="timer">Next card in: 10s</span>
+    </div>
 
     <script>
       class Card {
@@ -38,6 +42,13 @@
             "K",
             "A",
           ];
+          this.timeLeft = 10;
+          this.timerInterval = null;
+          this.generateCard = this.generateCard.bind(this);
+          this.startTimer = this.startTimer.bind(this);
+          this.updateTimerDisplay = this.updateTimerDisplay.bind(this);
+          this.setupEventListeners();
+          this.startTimer();
         }
 
         getRandomItem(array) {
@@ -60,15 +71,49 @@
             element.classList.remove("red", "black");
             element.classList.add(colorClass);
           });
+
+          this.timeLeft = 10;
+          this.updateTimerDisplay();
+        }
+
+        setupEventListeners() {
+          document
+            .getElementById("generateBtn")
+            .addEventListener("click", () => {
+              this.generateCard();
+            });
+
+          document.addEventListener("keydown", (event) => {
+            if (event.code === "Space") {
+              this.generateCard();
+            }
+          });
+        }
+
+        startTimer() {
+          if (this.timerInterval) {
+            clearInterval(this.timerInterval);
+          }
+          this.updateTimerDisplay();
+          this.timerInterval = setInterval(() => {
+            this.timeLeft--;
+
+            if (this.timeLeft <= 0) {
+              this.generateCard();
+            } else {
+              this.updateTimerDisplay();
+            }
+          }, 1000);
+        }
+
+        updateTimerDisplay() {
+          const timerElement = document.getElementById("timer");
+          timerElement.textContent = `Next card in: ${this.timeLeft}s`;
         }
       }
+
       const card = new Card();
       card.generateCard();
-      document.addEventListener("keydown", (event) => {
-        if (event.code === "Space") {
-          card.generateCard();
-        }
-      });
     </script>
   </body>
 </html>
