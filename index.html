@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Random Card Generator</title>
+    <link rel="stylesheet" href="src/style.css" />
+  </head>
+  <body>
+    <div class="card" id="card">
+      <span class="value top-value"></span>
+      <span class="suit"></span>
+      <span class="value bottom-value"></span>
+    </div>
+
+    <script>
+      class Card {
+        constructor() {
+          this.suits = {
+            hearts: { symbol: "♥", color: "red" },
+            diamonds: { symbol: "♦", color: "red" },
+            spades: { symbol: "♠", color: "black" },
+            clubs: { symbol: "♣", color: "black" },
+          };
+
+          this.values = [
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "J",
+            "Q",
+            "K",
+            "A",
+          ];
+        }
+
+        getRandomItem(array) {
+          return array[Math.floor(Math.random() * array.length)];
+        }
+
+        generateCard() {
+          const suitKeys = Object.keys(this.suits);
+          const randomSuit = this.suits[this.getRandomItem(suitKeys)];
+          const randomValue = this.getRandomItem(this.values);
+          const card = document.getElementById("card");
+          const suitElement = card.querySelector(".suit");
+          const valueElements = card.querySelectorAll(".value");
+          suitElement.textContent = randomSuit.symbol;
+          valueElements.forEach((element) => {
+            element.textContent = randomValue;
+          });
+          const colorClass = randomSuit.color;
+          [suitElement, ...valueElements].forEach((element) => {
+            element.classList.remove("red", "black");
+            element.classList.add(colorClass);
+          });
+        }
+      }
+      const card = new Card();
+      card.generateCard();
+      document.addEventListener("keydown", (event) => {
+        if (event.code === "Space") {
+          card.generateCard();
+        }
+      });
+    </script>
+  </body>
+</html>
